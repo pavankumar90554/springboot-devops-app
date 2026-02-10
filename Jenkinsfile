@@ -1,61 +1,40 @@
 pipeline {
   agent any
 
-  tools {
-    maven 'Maven'
-    jdk 'java17'
+  environment {
+    IMAGE_NAME = "pavankumar213/springboot-devops-app"
   }
 
   stages {
 
-    stage('Checkout Code') {
+    stage('Checkout') {
       steps {
         git 'https://github.com/pavankumar90554/springboot-devops-app.git'
       }
     }
 
-    stage('Build with Maven') {
+    stage('Build App') {
       steps {
         sh 'mvn clean package'
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Build & Push Docker Image') {
       steps {
-        sh 'docker build -t springboot-devops-app: .'
+        sh '''
+          docker build -t $IMAGE_NAME:$BUILD_NUMBER .
+          docker push $IMAGE_NAME:$BUILD_NUMBER
+        '''
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      steps {
+        sh '''
+          sed -i "s/BUILD_NUMBER/$BUILD_NUMBER/g" deployment.yaml
+          kubectl apply -f deployment.yaml
+       '''
       }
     }
   }
 }
-
-cat <<EOF > Jenkinsfile
-pipeline {
-  agent any
-
-  tools {
-    maven 'Maven'
-    jdk 'java17'
-  }
-
-  stages {
-
-    stage('Checkout Code') {
-      steps {
-        git 'https://github.com/pavankumar90554/springboot-devops-app.git'
-      }
-    }
-
-    stage('Build with Maven') {
-      steps {
-        sh 'mvn clean package'
-      }
-    }
-
-    stage('Build Docker Image') {
-      steps {
-        sh 'docker build -t springboot-devops-app: .'
-      }
-    }
-  }
-}
-
