@@ -1,26 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springboot-deployment
+  name: springboot-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: springboot
+      app: springboot-app
   template:
     metadata:
       labels:
-        app: springboot
+        app: springboot-app
     spec:
       containers:
       - name: springboot-app
-        image: pavankumar213/springboot-devops-app:BUILD_NUMBER
-        imagePullPolicy: Always
+        image: pavankumar213/springboot:${BUILD_NUMBER}
         ports:
         - containerPort: 8080
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 10
