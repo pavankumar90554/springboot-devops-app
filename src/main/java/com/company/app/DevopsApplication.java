@@ -15,6 +15,6 @@ public class DevopsApplication {
 
     @GetMapping("/")
     public String home() {
-        return "Spring Boot DevOps App - Day 1 Success 🚀";
+        return "Spring Boot DevOps App - ArgoCD complated";
     }
 }
