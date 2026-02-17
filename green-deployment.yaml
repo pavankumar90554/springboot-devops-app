@@ -1,24 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springboot-app
+  name: springboot-green
 spec:
   replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
   selector:
     matchLabels:
-      app: springboot-app
+      app: springboot-green
   template:
     metadata:
       labels:
-        app: springboot-app
+        app: springboot-green
     spec:
       containers:
       - name: springboot-app
-        image: pavankumar213/springboot:16
+        image: pavankumar213/springboot:14
         ports:
         - containerPort: 8080
