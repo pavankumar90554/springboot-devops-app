@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: springboot-app
-        image: pavankumar213/springboot:${BUILD_NUMBER}
+        image: pavankumar213/springboot:16
         ports:
         - containerPort: 8080
